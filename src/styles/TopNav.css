@@ -1,9 +1,14 @@
-/* Global Styles */
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Base Styles */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  transition: background-color 0.3s, color 0.3s;
+  background-color: #f9fafb;
+  color: #333;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Navbar Styles */
@@ -13,63 +18,157 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 32px;
-  background-color: #fff;
-  color: #333;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 1rem 2rem;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05);
   z-index: 1000;
-  transition: background-color 0.3s, box-shadow 0.3s;
+  transition: all 0.3s ease;
 }
 
 .navbar.dark {
-  background-color: #121212;
-  color: #e0e0e0;
-  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+  background-color: rgba(17, 24, 39, 0.95);
+  color: #f3f4f6;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Logo */
+.navbar-logo {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-decoration: none;
+  color: inherit;
 }
 
 /* Navbar Links */
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
 .navbar-links a {
-  margin: 0 20px;
   text-decoration: none;
   color: inherit;
-  font-weight: bold;
-  transition: color 0.3s;
+  font-weight: 500;
+  position: relative;
+  padding: 0.5rem 0;
+  transition: color 0.2s ease;
+}
+
+.navbar-links a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #3b82f6;
+  transition: width 0.3s ease;
 }
 
 .navbar-links a:hover {
-  color: #007bff;
+  color: #3b82f6;
+}
+
+.navbar-links a:hover::after {
+  width: 100%;
 }
 
 /* Search Bar */
+.navbar-search {
+  position: relative;
+}
+
 .navbar-search input {
-  padding: 8px 12px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  transition: border-color 0.3s;
+  padding: 0.6rem 1rem;
+  padding-right: 2.5rem;
+  font-size: 0.9rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 9999px;
+  background-color: #f9fafb;
+  transition: all 0.2s ease;
+  width: 200px;
 }
 
 .navbar-search input:focus {
-  border-color: #007bff;
   outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  width: 220px;
+}
+
+.navbar.dark .navbar-search input {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #f3f4f6;
+}
+
+.navbar.dark .navbar-search input::placeholder {
+  color: #9ca3af;
 }
 
 /* Theme Toggler */
 .theme-toggler {
-  background: none;
+  background: transparent;
   border: none;
-  font-size: 18px;
+  font-size: 1.2rem;
   cursor: pointer;
-  padding: 8px;
-  transition: transform 0.3s;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
 }
 
 .theme-toggler:hover {
-  transform: scale(1.1);
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.navbar.dark .theme-toggler:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Dark Mode Styles */
 body.dark-mode {
-  background-color: #121212;
-  color: #e0e0e0;
+  background-color: #111827;
+  color: #f3f4f6;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem;
+  }
+  
+  .navbar-links {
+    gap: 1rem;
+  }
+  
+  .navbar-search input {
+    width: 150px;
+  }
+  
+  .navbar-search input:focus {
+    width: 170px;
+  }
+}
+
+@media (max-width: 640px) {
+  .navbar {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .navbar-search {
+    width: 100%;
+  }
+  
+  .navbar-search input,
+  .navbar-search input:focus {
+    width: 100%;
+  }
 }
