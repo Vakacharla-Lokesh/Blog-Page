@@ -1,0 +1,25 @@
+.blog-page{
+    background-color: grey;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    box-shadow: inset;
+    height: max-content;
+}
+
+.Blog-Title{
+    color: aliceblue;
+    display: block;
+}
+
+.info{
+    color: antiquewhite;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: block;
+}
+
+.blog-content{
+    color: aliceblue;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
