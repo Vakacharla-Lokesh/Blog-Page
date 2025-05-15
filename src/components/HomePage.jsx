@@ -1,29 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import blogPosts from '../data/blogPosts';
+import blogPosts from '../data/blogPost';
 import '../styles/HomePage.css';
 
 const HomePage = ({ searchQuery }) => {
-  const [filteredPosts, setFilteredPosts] = useState(blogPosts);
-
   // Filter posts based on search query
-  useEffect(() => {
-    if (!searchQuery) {
-      setFilteredPosts(blogPosts);
-      return;
-    }
-
-    const query = searchQuery.toLowerCase();
-    const filtered = blogPosts.filter(
-      post => 
-        post.title.toLowerCase().includes(query) || 
-        post.excerpt.toLowerCase().includes(query) || 
-        post.content.toLowerCase().includes(query) ||
-        post.categories.some(category => category.toLowerCase().includes(query))
-    );
-    
-    setFilteredPosts(filtered);
-  }, [searchQuery]);
+  const filteredPosts = searchQuery
+    ? blogPosts.filter(
+        post => 
+          post.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+          post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) || 
+          post.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          post.categories.some(category => category.toLowerCase().includes(searchQuery.toLowerCase()))
+      )
+    : blogPosts;
 
   return (
     <div className="home-page">

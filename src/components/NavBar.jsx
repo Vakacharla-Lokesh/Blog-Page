@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../styles/TopNav.css';
+import { Link } from 'react-router-dom';
 
-const Navbar = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+const Navbar = ({ onSearch, isDarkMode, onThemeToggle, isAdmin, onLogout }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  // Handle initial theme preference
+  // Extract search query from URL on component mount
   useEffect(() => {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setIsDarkMode(prefersDark);
-    document.body.classList.toggle('dark-mode', prefersDark);
-  }, []);
+    const params = new URLSearchParams(location.search);
+    const query = params.get('q');
+    if (query) {
+      setSearchQuery(query);
+      if (onSearch) onSearch(query);
+    }
+  }, [location.search, onSearch]);
 
   // Handle scroll effect
   useEffect(() => {
@@ -27,32 +33,52 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleThemeToggle = () => {
-    setIsDarkMode(!isDarkMode);
-    document.body.classList.toggle('dark-mode', !isDarkMode);
-  };
-
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    console.log(`Searching for: ${searchQuery}`);
-    // Implement your search functionality here
+    
+    // Update URL with search query
+    const params = new URLSearchParams();
+    if (searchQuery.trim()) {
+      params.set('q', searchQuery.trim());
+      navigate(`/?${params.toString()}`);
+    } else {
+      navigate('/');
+    }
+    
+    // Call the onSearch callback
+    if (onSearch) {
+      onSearch(searchQuery.trim());
+    }
+  };
+
+  const handleSearchReset = () => {
+    setSearchQuery('');
+    navigate('/');
+    if (onSearch) {
+      onSearch('');
+    }
   };
 
   return (
     <nav className={`navbar ${isDarkMode ? 'dark' : 'light'} ${isScrolled ? 'scrolled' : ''}`}>
-      <a href="#home" className="navbar-logo">
+      <a href="/" className="navbar-logo">
         My Blog
       </a>
       
       <div className="navbar-links">
-        <a href="#home">Home</a>
-        <a href="#blog">Blog</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
+        <Link to="/">Home</Link>
+        <Link to="/about">About</Link>
+        <Link to="/contact">Contact</Link>
+        {isAdmin && <Link to="/new-post" className="create-post">Create Post</Link>}
+        {isAdmin && (
+          <button onClick={onLogout} className="logout-btn">
+            Logout
+          </button>
+        )}
       </div>
       
       <form className="navbar-search" onSubmit={handleSearchSubmit}>
@@ -63,11 +89,28 @@ const Navbar = () => {
           onChange={handleSearchChange}
           aria-label="Search blog posts"
         />
+        {searchQuery && (
+          <button 
+            type="button"
+            className="search-clear"
+            onClick={handleSearchReset}
+            aria-label="Clear search"
+          >
+            ×
+          </button>
+        )}
+        <button 
+          type="submit"
+          className="search-submit"
+          aria-label="Submit search"
+        >
+          🔍
+        </button>
       </form>
       
       <button 
         className="theme-toggler" 
-        onClick={handleThemeToggle}
+        onClick={onThemeToggle}
         aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
       >
         {isDarkMode ? '🌙' : '☀️'}
